@@ -15,7 +15,7 @@ services:
       context: ./Plan-City
       dockerfile: Dockerfile
     ports:
-      - "80:5173"
+      - "81:5173"
     env_file:
       - ./Plan-City/.env
     volumes:
