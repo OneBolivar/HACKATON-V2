@@ -1,6 +1,17 @@
-# PlanCity API
+# PlanCity
 
-API REST para el descubrimiento de eventos y actividades locales: categorías, eventos y confirmación de asistencia, con autenticación por JWT y control de acceso basado en roles (RBAC). Construida con [NestJS](https://nestjs.com/), [TypeORM](https://typeorm.io/) y PostgreSQL (compatible con [Supabase](https://supabase.com/)).
+Monorepo de PlanCity con el frontend React y la API REST para descubrir y gestionar eventos locales. Cada aplicación conserva sus dependencias y scripts en su propio directorio; [Docker Compose](docker-compose.yml) permite levantarlas juntas.
+
+| Aplicación | Directorio | Stack |
+|---|---|---|
+| Frontend | `Plan-City/` | React, Vite y TypeScript |
+| API | `Plan-City-Api/` | NestJS, TypeORM y PostgreSQL |
+
+Clona este repositorio una sola vez y ejecuta los comandos de cada aplicación desde su directorio. Para iniciar ambas con Docker, configura los archivos `.env` locales y ejecuta `docker compose up --build` desde la raíz.
+
+## API REST
+
+La API ofrece categorías, eventos y favoritos, con autenticación JWT y control de acceso basado en roles (RBAC). Está construida con [NestJS](https://nestjs.com/), [TypeORM](https://typeorm.io/) y PostgreSQL (compatible con [Supabase](https://supabase.com/)).
 
 ## Tabla de contenidos
 
@@ -54,8 +65,7 @@ Cada módulo sigue la misma convención interna: `*.controller.ts` (rutas), `*.s
 ## Instalación y configuración
 
 ```bash
-git clone <url-del-repositorio>
-cd plancity-api
+cd Plan-City-Api
 npm install
 ```
 
