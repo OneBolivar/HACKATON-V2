@@ -126,45 +126,44 @@ export function EventsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Hero Banner Principal */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-800 text-white p-8 sm:p-10 mb-8 shadow-xl shadow-purple-950/15">
-        <div className="absolute -right-12 -top-12 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-violet-300/15 bg-gradient-to-br from-[#211633] via-[#171222] to-[#10232a] p-6 text-white shadow-2xl shadow-black/25 sm:p-10">
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 border-l border-white/5 bg-gradient-to-l from-cyan-300/[0.04] to-transparent lg:block" />
 
-        <div className="relative z-10 max-w-2xl">
+        <div className="relative z-10 max-w-3xl">
           <div className="flex items-center justify-between mb-3">
-            <span className="inline-block px-3 py-1 bg-white/15 border border-white/20 rounded-full text-xs font-semibold uppercase tracking-wider text-purple-200 backdrop-blur-sm">
+            <span className="inline-block rounded-full border border-violet-200/20 bg-violet-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-violet-200 backdrop-blur-sm">
               Descubre & Conecta
             </span>
             {user?.role === 'admin' && (
               <Link
                 to="/events/new"
-                className="bg-white text-purple-900 hover:bg-purple-50 font-bold text-xs px-3.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                className="rounded-lg border border-white/15 bg-white px-3.5 py-2 text-xs font-bold text-[#211633] shadow-sm transition hover:bg-violet-100 active:scale-95"
               >
                 + Publicar Evento
               </Link>
             )}
           </div>
           
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-3">
+          <h1 className="mb-3 text-3xl font-black leading-tight sm:text-4xl">
             Encuentra los mejores eventos en PlanCity
           </h1>
-          <p className="text-purple-200 text-sm font-normal mb-6">
+          <p className="mb-6 max-w-xl text-sm leading-relaxed text-white/65">
             Festivales, conferencias, deportes y actividades comunitarias en tu ciudad.
           </p>
 
           {/* Buscador Integrado en Hero */}
-          <div className="flex flex-col sm:flex-row gap-2 bg-white/15 p-2 rounded-2xl backdrop-blur-md border border-white/20">
+          <div className="flex flex-col gap-2 rounded-xl border border-white/10 bg-black/20 p-2 backdrop-blur-md sm:flex-row">
             <input
               type="text"
               placeholder="Buscar por nombre o lugar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-4 py-2.5 bg-white text-gray-900 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="min-w-0 flex-1 rounded-lg border border-white/10 bg-[#110e18]/90 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-violet-300/60 focus:outline-none focus:ring-2 focus:ring-violet-400/20"
             />
             <select
               value={selectedCategoryId}
               onChange={(e) => setSelectedCategoryId(e.target.value)}
-              className="px-4 py-2.5 bg-white text-gray-700 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="rounded-lg border border-white/10 bg-[#110e18]/90 px-4 py-3 text-sm font-medium text-white/80 focus:border-violet-300/60 focus:outline-none focus:ring-2 focus:ring-violet-400/20 sm:min-w-52"
             >
               <option value="">Todas las categorías</option>
               {categories.map((cat) => (
@@ -178,31 +177,44 @@ export function EventsPage() {
       </div>
 
       {errorMsg && (
-        <div role="alert" aria-live="polite" className="p-3 mb-6 bg-red-50 text-red-700 rounded-lg text-sm">
+        <div role="alert" aria-live="polite" className="mb-6 rounded-xl border border-rose-400/20 bg-rose-400/10 p-4 text-sm text-rose-200">
           {errorMsg}
         </div>
       )}
 
       {loading ? (
-        <div className="p-16 text-center text-purple-600 font-medium">Cargando eventos...</div>
+        <div className="my-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="Cargando eventos" aria-live="polite">
+          {[0, 1, 2].map((item) => (
+            <div key={item} className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.035]">
+              <div className="h-48 animate-pulse bg-white/[0.06]" />
+              <div className="space-y-3 p-5">
+                <div className="h-3 w-2/5 animate-pulse rounded bg-white/[0.08]" />
+                <div className="h-5 w-4/5 animate-pulse rounded bg-white/[0.08]" />
+                <div className="h-3 w-3/5 animate-pulse rounded bg-white/[0.06]" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : filteredEvents.length === 0 ? (
-        <div className="my-10 p-12 text-center text-gray-500 bg-white rounded-2xl border border-dashed border-gray-300">
-          No se encontraron eventos con los filtros seleccionados.
+        <div className="my-10 rounded-2xl border border-dashed border-white/15 bg-white/[0.025] px-6 py-16 text-center">
+          <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl border border-violet-300/15 bg-violet-300/10 text-2xl text-violet-200" aria-hidden="true">⌕</span>
+          <h2 className="text-lg font-bold text-white">Sin eventos por aquí</h2>
+          <p className="mt-2 text-sm text-white/55">Prueba con otra búsqueda o cambia los filtros.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-10">
+        <div className="my-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredEvents.map((ev) => (
             <div
               key={ev.id}
-              className="bg-white border border-purple-100/90 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+              className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.035] shadow-lg shadow-black/10 transition duration-200 hover:-translate-y-1 hover:border-violet-300/25 hover:bg-white/[0.055] hover:shadow-xl hover:shadow-violet-950/20"
             >
               <div>
-                <div className="relative h-48 bg-purple-50 flex items-center justify-center">
+                <div className="relative flex h-48 items-center justify-center bg-gradient-to-br from-[#20172d] to-[#111a20]">
                   <EventCardImage event={ev} />
 
                   <button
                     onClick={() => handleToggleFavorite(ev)}
-                    className="absolute top-2.5 right-2.5 w-9 h-9 bg-white/95 backdrop-blur-sm border border-purple-100 rounded-full shadow-sm flex items-center justify-center text-base hover:scale-105 transition-transform"
+                    className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-full border border-white/20 bg-black/45 text-lg shadow-md backdrop-blur transition hover:scale-110 hover:border-violet-200/50 active:scale-95"
                     aria-label={ev.isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                   >
                     {ev.isFavorite ? '💜' : '🤍'}
@@ -210,32 +222,32 @@ export function EventsPage() {
                 </div>
 
                 <div className="p-5">
-                  <p className="text-xs text-purple-600 font-bold mb-1.5 flex items-center gap-2">
+                  <p className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-cyan-200/80">
                     <span>📍 {ev.location}</span>
-                    <span>•</span>
-                    <span>📅 {new Date(ev.date).toLocaleDateString()}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{new Date(ev.date).toLocaleDateString()}</span>
                   </p>
                   <Link to={`/events/${ev.id}`}>
-                    <h3 className="font-bold text-gray-900 hover:text-purple-600 transition-colors text-base line-clamp-1">
+                    <h3 className="line-clamp-1 text-base font-bold text-white transition-colors group-hover:text-violet-200">
                       {ev.name}
                     </h3>
                   </Link>
-                  <p className="text-xs text-gray-500 mt-1">Capacidad: {ev.capacity} personas</p>
+                  <p className="mt-1 text-xs text-white/45">Capacidad: {ev.capacity} personas</p>
                   {ev.description && (
-                    <p className="text-gray-600 text-xs mt-2.5 line-clamp-2 leading-relaxed">
+                    <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-white/60">
                       {ev.description}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="p-5 pt-0 border-t border-gray-100 flex justify-between items-center mt-3">
-                <span className="text-base font-extrabold text-purple-700">
+              <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] p-5 pt-4">
+                <span className="text-base font-extrabold text-white">
                   {ev.price > 0 ? `$${ev.price.toLocaleString()}` : 'Gratis'}
                 </span>
                 <Link
                   to={`/events/${ev.id}`}
-                  className="text-xs font-bold text-purple-600 hover:underline"
+                  className="rounded-md px-2 py-1 text-xs font-bold text-violet-200 transition hover:bg-violet-300/10 hover:text-white active:scale-95"
                 >
                   Ver detalle →
                 </Link>

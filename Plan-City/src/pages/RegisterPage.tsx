@@ -5,7 +5,7 @@
  * Redirige a /login si el usuario ya tiene cuenta.
  */
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ApiError } from "../api/apiError";
@@ -25,7 +25,7 @@ export function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Manejar el envío del formulario
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorMessage(null);
     setIsSubmitting(true);
@@ -54,91 +54,94 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-10 bg-slate-50">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-purple-950/5 border border-purple-100 p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-            Crear Cuenta
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Únete a PlanCity y descubre eventos
-          </p>
+    <section className="relative isolate flex min-h-[calc(100dvh-4.25rem)] items-center justify-center overflow-hidden bg-[#2A292E] px-4 py-8 sm:px-6">
+      {/* Ambient light stays behind the glass panel. */}
+      <div aria-hidden="true" className="pointer-events-none absolute -left-32 -top-36 size-80 rounded-full bg-[#4F2361]/45 blur-[140px] animate-[pulse_9s_ease-in-out_infinite]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 -right-28 size-96 rounded-full bg-[#4F2361]/35 blur-[140px] animate-[pulse_11s_ease-in-out_infinite]" />
+
+      <div className="relative my-auto w-full max-w-md animate-[fade-in_500ms_ease-out_both] rounded-3xl border border-[#7F5281]/30 bg-[#2A292E]/85 p-6 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:p-9">
+        <div className="mb-7 text-center">
+          <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl border border-[#7F5281]/40 bg-[#4F2361]/45 text-sm font-black tracking-wide text-white shadow-lg shadow-[#4F2361]/30">
+            PC
+          </span>
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7F5281]">Tu próxima historia empieza aquí</p>
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">Crear cuenta</h1>
+          <p className="mt-2 text-sm text-white/65">Únete a PlanCity y descubre eventos</p>
         </div>
+
         {errorMessage && (
-          <div
-            role="alert"
-            aria-live="polite"
-            className="bg-red-50 text-red-700 p-3 rounded mb-4"
-          >
+          <div role="alert" aria-live="polite" className="mb-5 rounded-xl border border-rose-300/30 bg-rose-950/35 px-4 py-3 text-sm leading-relaxed text-rose-100">
             {errorMessage}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Nombre Completo
+            <label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/80">
+              Nombre completo
             </label>
             <input
               id="name"
               type="text"
+              autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="Ej: Juan Bolívar"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+              className="w-full rounded-xl border border-[#7F5281]/25 bg-[#2A292E]/90 px-4 py-3 text-sm text-white placeholder:text-white/35 transition duration-200 focus:border-[#7F5281] focus:outline-none focus:ring-4 focus:ring-[#7F5281]/20"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Correo Electrónico
+            <label htmlFor="email" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/80">
+              Correo electrónico
             </label>
             <input
               id="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="tu@email.com"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+              className="w-full rounded-xl border border-[#7F5281]/25 bg-[#2A292E]/90 px-4 py-3 text-sm text-white placeholder:text-white/35 transition duration-200 focus:border-[#7F5281] focus:outline-none focus:ring-4 focus:ring-[#7F5281]/20"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+            <label htmlFor="password" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/80">
               Contraseña
             </label>
             <input
               id="password"
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+              className="w-full rounded-xl border border-[#7F5281]/25 bg-[#2A292E]/90 px-4 py-3 text-sm text-white placeholder:text-white/35 transition duration-200 focus:border-[#7F5281] focus:outline-none focus:ring-4 focus:ring-[#7F5281]/20"
             />
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-purple-600/20 active:scale-[0.98] disabled:opacity-50 text-sm mt-2"
+            className="group relative mt-2 inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-[#4F2361] to-[#7F5281] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#4F2361]/30 transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
           >
-            {isSubmitting ? "Registrando..." : "Crear Cuenta"}
+            <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/20 blur-md transition-transform duration-700 group-hover:translate-x-[450%]" />
+            {isSubmitting && <span aria-hidden="true" className="size-4 animate-spin rounded-full border-2 border-white/35 border-t-white" />}
+            <span>{isSubmitting ? "Creando cuenta..." : "Crear cuenta"}</span>
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="mt-6 text-center text-sm text-white/60">
           ¿Ya tienes cuenta?{" "}
-          <Link
-            to="/login"
-            className="text-purple-600 font-semibold hover:underline"
-          >
+          <Link to="/login" className="font-semibold text-[#7F5281] transition-colors hover:text-white">
             Inicia sesión
           </Link>
         </p>
       </div>
-    </div>
+    </section>
   );
 }

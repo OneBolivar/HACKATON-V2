@@ -111,11 +111,11 @@ npm install
 Crea o configura un archivo `.env` en la raíz del proyecto:
 
 ```env
-# URL de la API backend (por defecto: http://localhost:3000)
-VITE_API_URL=http://localhost:3000
+# URL de la API backend cuando se ejecuta con docker compose
+VITE_API_URL=http://localhost:3001
 ```
 
-> **Nota**: Vite automáticamente busca variables que comienzan con `VITE_`. Si no se define `VITE_API_URL`, se utiliza `http://localhost:3000`.
+> **Nota**: Docker Compose publica NestJS en el puerto `3001` del host para evitar conflictos con otros servicios locales. Si ejecutas el backend directamente con `npm run start:dev`, usa `http://localhost:3000`. Si no se define `VITE_API_URL`, el frontend usa `http://localhost:3001`.
 
 ### 4️⃣ Ejecutar el Servidor de Desarrollo
 

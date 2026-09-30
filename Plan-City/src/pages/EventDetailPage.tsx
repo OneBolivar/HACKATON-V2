@@ -67,140 +67,151 @@ export function EventDetailPage() {
   }
 
   if (loading) {
-    return <div className="p-12 text-center text-purple-600 font-medium">Cargando evento...</div>;
+    return (
+      <div className="flex min-h-[calc(100vh-4.25rem)] items-center justify-center bg-[#2A292E] px-4" role="status" aria-live="polite">
+        <div className="flex items-center gap-3 text-sm font-medium text-white/75">
+          <span aria-hidden="true" className="size-5 animate-spin rounded-full border-2 border-[#7F5281]/35 border-t-[#7F5281]" />
+          Cargando evento...
+        </div>
+      </div>
+    );
   }
 
   if (errorMsg || !event) {
     return (
-      <div className="max-w-md mx-auto my-8 p-4 bg-red-50 text-red-700 text-center rounded-xl" role="alert">
-        <p className="mb-2">{errorMsg || 'Evento no encontrado'}</p>
-        <Link to="/" className="text-purple-600 underline font-semibold text-sm">
+      <div className="mx-auto my-10 max-w-md rounded-2xl border border-rose-300/25 bg-rose-950/30 p-5 text-center text-rose-100" role="alert">
+        <p className="mb-3 text-sm">{errorMsg || 'Evento no encontrado'}</p>
+        <Link to="/" className="text-sm font-semibold text-[#7F5281] underline underline-offset-4 hover:text-white">
           Volver a eventos
         </Link>
       </div>
     );
   }
 
-  const rawFirstImage = event.images && event.images.length > 0 ? (event.images[0] as unknown) : null;
-  const imgUrl: string | null =
-    typeof rawFirstImage === 'string'
-      ? rawFirstImage
-      : (rawFirstImage as { url?: string })?.url || (event as { imageUrl?: string }).imageUrl || null;
+  const imgUrl = event.images?.[0] ?? null;
 
   return (
-    <div className="max-w-3xl mx-auto my-8 px-4 sm:px-0">
-      <div className="p-6 sm:p-8 bg-white border border-purple-100 rounded-3xl shadow-sm">
-        <Link to="/" className="text-xs font-semibold text-purple-600 hover:underline mb-4 inline-block">
-          ← Volver a eventos
+    <div className="relative isolate min-h-[calc(100vh-4.25rem)] overflow-hidden bg-[#2A292E] px-4 py-8 sm:px-6 sm:py-12">
+      <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-24 size-96 rounded-full bg-[#4F2361]/25 blur-[140px]" />
+      <div className="relative mx-auto max-w-5xl">
+        <Link to="/" className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-[#7F5281] transition-colors hover:text-white">
+          <span aria-hidden="true">←</span> Volver a eventos
         </Link>
 
-        <div className="h-72 mb-6 rounded-2xl overflow-hidden bg-purple-50 flex items-center justify-center">
-          {imgUrl && !imageFailed ? (
-            <img
-              src={imgUrl}
-              alt={event.name}
-              onError={() => setImageFailed(true)}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-purple-300 text-sm font-semibold">Sin imagen disponible</span>
-          )}
-        </div>
+        <article className="overflow-hidden rounded-3xl border border-[#7F5281]/30 bg-[#2A292E]/85 shadow-2xl shadow-black/50 backdrop-blur-2xl">
+          <header className="relative isolate flex min-h-72 items-end overflow-hidden bg-gradient-to-br from-[#4F2361] via-[#2A292E] to-[#7F5281]/40 p-6 sm:min-h-96 sm:p-10">
+            {imgUrl && !imageFailed && (
+              <img
+                src={imgUrl}
+                alt=""
+                onError={() => setImageFailed(true)}
+                className="absolute inset-0 -z-20 size-full object-cover opacity-30"
+              />
+            )}
+            <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2A292E] via-[#2A292E]/35 to-[#4F2361]/25" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-28 -z-10 size-80 rounded-full bg-[#7F5281]/25 blur-[100px]" />
 
-        <div className="flex justify-between items-center mb-3">
-          {event.category && (
-            <span className="text-xs font-bold uppercase px-3 py-1 bg-purple-100 text-purple-700 rounded-full">
-              {event.category.name}
-            </span>
-          )}
-          <span className="text-xs text-gray-500 font-semibold">
-            Capacidad: {event.capacity} personas
-          </span>
-        </div>
+            <div className="relative z-10 w-full">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <span className="rounded-full border border-[#7F5281]/45 bg-[#2A292E]/60 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
+                  {event.category?.name || 'Evento local'}
+                </span>
+                <span className="rounded-full border border-white/15 bg-[#2A292E]/50 px-3 py-1.5 text-xs font-semibold text-white/80 backdrop-blur-md">
+                  {event.capacity} cupos
+                </span>
+              </div>
+              <h1 className="max-w-3xl text-3xl font-black leading-tight text-white sm:text-5xl">{event.name}</h1>
+            </div>
+          </header>
 
-        <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4">{event.name}</h1>
+          <div className="p-5 sm:p-8">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[#7F5281]/25 bg-[#2A292E]/70 p-4">
+                <span className="mb-2 flex size-9 items-center justify-center rounded-xl bg-[#4F2361]/45 text-lg text-white" aria-hidden="true">◷</span>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#7F5281]">Fecha</p>
+                <p className="mt-1 text-sm font-semibold text-white">{new Date(event.date).toLocaleDateString('es-ES', { dateStyle: 'long' })}</p>
+              </div>
+              <div className="rounded-2xl border border-[#7F5281]/25 bg-[#2A292E]/70 p-4">
+                <span className="mb-2 flex size-9 items-center justify-center rounded-xl bg-[#4F2361]/45 text-lg text-white" aria-hidden="true">⌖</span>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#7F5281]">Ubicación</p>
+                <p className="mt-1 text-sm font-semibold text-white">{event.location}</p>
+              </div>
+              <div className="rounded-2xl border border-[#7F5281]/25 bg-[#2A292E]/70 p-4">
+                <span className="mb-2 flex size-9 items-center justify-center rounded-xl bg-[#4F2361]/45 text-lg font-bold text-white" aria-hidden="true">$</span>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#7F5281]">Precio</p>
+                <p className="mt-1 text-sm font-semibold text-white">{event.price > 0 ? `$${event.price.toLocaleString()}` : 'Gratis'}</p>
+              </div>
+            </div>
 
-        <div className="space-y-1.5 text-sm text-gray-600 mb-6 pb-5 border-b border-gray-100">
-          <p><strong>📅 Fecha:</strong> {new Date(event.date).toLocaleDateString()}</p>
-          <p><strong>📍 Ubicación:</strong> {event.location}</p>
-          <p><strong>💵 Precio:</strong> {event.price > 0 ? `$${event.price.toLocaleString()}` : 'Gratis'}</p>
-        </div>
-
-        <div className="mb-6">
-          <h4 className="text-xs font-bold text-gray-400 uppercase mb-2">Descripción</h4>
-          <p className="text-gray-700 text-sm leading-relaxed">
-            {event.description || 'Sin descripción disponible.'}
-          </p>
-        </div>
-
-        {/* Modulo de Boleto Digital y Check-in QR */}
-        <div className="mt-8 p-6 bg-gradient-to-br from-purple-50/70 to-indigo-50/50 border border-purple-100 rounded-2xl">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex-1 text-center sm:text-left">
-              <span className="text-[10px] font-black uppercase px-2.5 py-0.5 bg-purple-200/70 text-purple-800 rounded-md">
-                Boleto Digital & QR
-              </span>
-              <h3 className="text-lg font-black text-gray-900 mt-2">Pase de Acceso Rápido</h3>
-              <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                Presenta este código en la entrada para el escaneo móvil y control de aforo instantáneo.
+            <section className="mt-8">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-[#7F5281]">Acerca del evento</h2>
+              <p className="mt-2 text-sm leading-relaxed text-white/75">
+                {event.description || 'Sin descripción disponible.'}
               </p>
-              
-              <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-3">
-                <button
-                  onClick={handleReserveTicket}
-                  disabled={ticketReserved}
-                  className={`px-5 py-2.5 text-white text-xs font-bold rounded-xl shadow-sm transition-all ${
-                    ticketReserved
-                      ? 'bg-emerald-600 cursor-default'
-                      : !isAuthenticated
-                      ? 'bg-purple-600 hover:bg-purple-700 ring-2 ring-purple-300'
-                      : 'bg-purple-600 hover:bg-purple-700 active:scale-95'
-                  }`}
+            </section>
+
+            <section className="mt-8 rounded-2xl border border-[#7F5281]/30 bg-gradient-to-br from-[#4F2361]/25 via-[#2A292E]/90 to-[#7F5281]/10 p-5 sm:p-6" aria-labelledby="digital-pass-title">
+              <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+                <div className="flex-1 text-center sm:text-left">
+                  <span className="rounded-md border border-[#7F5281]/40 bg-[#4F2361]/35 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
+                    Pase digital · QR
+                  </span>
+                  <h2 id="digital-pass-title" className="mt-3 text-xl font-black text-white">Pase de acceso rápido</h2>
+                  <p className="mt-1 max-w-lg text-xs leading-relaxed text-white/65">
+                    Presenta este código en la entrada para el escaneo móvil y el control de aforo.
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+                    <button
+                      onClick={handleReserveTicket}
+                      disabled={ticketReserved}
+                      className="rounded-xl bg-gradient-to-r from-[#4F2361] to-[#7F5281] px-5 py-3 text-xs font-bold text-white shadow-lg shadow-[#4F2361]/25 transition hover:brightness-110 active:scale-95 disabled:cursor-default disabled:opacity-80"
+                    >
+                      {!isAuthenticated
+                        ? 'Inicia sesión para reservar'
+                        : ticketReserved
+                        ? '✓ Boleto reservado'
+                        : event.price > 0
+                        ? `Comprar entrada ($${event.price.toLocaleString()})`
+                        : 'Obtener pase gratuito'}
+                    </button>
+                    <span className="text-xs font-medium text-white/50">Capacidad: {event.capacity} personas</span>
+                  </div>
+                </div>
+
+                <div className="flex shrink-0 flex-col items-center rounded-2xl border border-[#7F5281]/30 bg-[#2A292E]/75 p-4 shadow-lg shadow-black/20">
+                  <div className="flex size-32 items-center justify-center overflow-hidden rounded-xl border border-[#7F5281]/25 bg-white p-2">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&color=4F2361&data=PLANCITY-EVENT-${event.id}`}
+                      alt="Código QR del boleto"
+                      className="size-full rounded-lg"
+                    />
+                  </div>
+                  <span className="mt-2 font-mono text-[10px] font-bold tracking-wider text-[#7F5281]">
+                    ID: {event.id.slice(0, 8).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            {user?.role === 'admin' && (
+              <div className="mt-6 flex flex-col gap-3 border-t border-[#7F5281]/20 pt-6 sm:flex-row">
+                <Link
+                  to={`/events/${event.id}/edit`}
+                  className="flex-1 rounded-xl border border-[#7F5281]/35 bg-[#4F2361]/35 py-3 text-center text-sm font-bold text-white transition hover:bg-[#4F2361]/60 active:scale-95"
                 >
-                  {!isAuthenticated
-                    ? 'Inicia sesión para reservar'
-                    : ticketReserved
-                    ? '✓ Boleto Reservado'
-                    : event.price > 0
-                    ? `Comprar Entrada ($${event.price.toLocaleString()})`
-                    : 'Obtener Pase Gratuito'}
+                  Editar evento
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 rounded-xl border border-[#7F5281]/25 bg-[#2A292E]/70 py-3 text-sm font-bold text-white/75 transition hover:border-[#7F5281]/60 hover:text-white active:scale-95"
+                >
+                  Eliminar evento
                 </button>
-                <span className="text-xs text-gray-400 font-medium">Cupos limitados</span>
               </div>
-            </div>
-
-            {/* Codigo QR real y escaneable */}
-            <div className="p-3 bg-white rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center">
-              <div className="w-28 h-28 bg-purple-50 rounded-xl p-2 flex items-center justify-center border border-purple-100">
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&color=581c87&data=PLANCITY-EVENT-${event.id}`}
-                  alt="Código QR del boleto"
-                  className="w-full h-full rounded-lg"
-                />
-              </div>
-              <span className="text-[10px] font-mono font-bold text-purple-800 mt-2 tracking-wider">
-                ID: {event.id.slice(0, 8).toUpperCase()}
-              </span>
-            </div>
+            )}
           </div>
-        </div>
-
-        {user?.role === 'admin' && (
-          <div className="flex gap-2 pt-6 mt-6 border-t border-gray-100">
-            <Link
-              to={`/events/${event.id}/edit`}
-              className="flex-1 text-center py-2.5 bg-purple-50 text-purple-700 font-bold rounded-xl text-sm hover:bg-purple-100 transition-colors"
-            >
-              Editar Evento
-            </Link>
-            <button
-              onClick={handleDelete}
-              className="flex-1 py-2.5 bg-red-50 text-red-700 font-bold rounded-xl text-sm hover:bg-red-100 transition-colors"
-            >
-              Eliminar Evento
-            </button>
-          </div>
-        )}
+        </article>
       </div>
     </div>
   );

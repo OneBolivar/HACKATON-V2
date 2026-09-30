@@ -380,8 +380,10 @@ Necesitas tener instalado:
 Crea o ajusta el archivo `Plan-City/.env`:
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:3001
 ```
+
+Docker Compose publica el backend NestJS en `localhost:3001` para evitar conflictos con servicios locales; el puerto interno del contenedor sigue siendo `3000`.
 
 ### Backend
 

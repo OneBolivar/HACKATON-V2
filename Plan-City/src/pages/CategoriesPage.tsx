@@ -42,70 +42,82 @@ export function CategoriesPage() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b border-purple-100 pb-4">
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Categorías</h1>
-          <p className="text-sm text-gray-500 mt-1">Explora actividades agrupadas por temática y área de interés</p>
-        </div>
-        
-        {user?.role === ADMIN_ROLE && (
-          <Link
-            to="/categories/new"
-            className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-purple-600/20 active:scale-95"
-          >
-            + Nueva Categoría
-          </Link>
-        )}
-      </div>
+    <section className="relative isolate min-h-[calc(100vh-4.25rem)] overflow-hidden bg-[#2A292E] px-4 py-10 sm:px-6 sm:py-14">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-32 -top-40 size-96 rounded-full bg-[#4F2361]/25 blur-[140px]" />
 
-      {errorMessage && (
-        <div
-          role="alert"
-          aria-live="polite"
-          className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-xl mb-6 text-sm font-medium"
-        >
-          {errorMessage}
-        </div>
-      )}
+      <div className="relative mx-auto max-w-6xl">
+        <header className="mb-9 flex flex-col items-start justify-between gap-5 border-b border-[#7F5281]/25 pb-6 sm:flex-row sm:items-end">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7F5281]">Descubre por intereses</p>
+            <h1 className="text-3xl font-black text-white sm:text-4xl">
+              Explora <span className="bg-gradient-to-r from-white to-[#7F5281] bg-clip-text text-transparent">categorías</span>
+            </h1>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60">
+              Encuentra actividades agrupadas por temática y área de interés.
+            </p>
+          </div>
 
-      {loading ? (
-        <div className="text-center py-20 text-purple-600 font-medium">Cargando categorías...</div>
-      ) : categories.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-300">
-          <p className="text-gray-500 text-sm">No hay categorías registradas por el momento.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="bg-white border border-purple-100/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-purple-200 transition-all flex flex-col justify-between"
+          {user?.role === ADMIN_ROLE && (
+            <Link
+              to="/categories/new"
+              className="rounded-xl bg-gradient-to-r from-[#4F2361] to-[#7F5281] px-4 py-3 text-sm font-bold text-white shadow-lg shadow-[#4F2361]/25 transition hover:brightness-110 active:scale-95"
             >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 bg-purple-50 text-purple-700 rounded-md border border-purple-100">
+              + Nueva categoría
+            </Link>
+          )}
+        </header>
+
+        {errorMessage && (
+          <div role="alert" aria-live="polite" className="mb-6 rounded-xl border border-rose-300/25 bg-rose-950/30 p-4 text-sm font-medium text-rose-100">
+            {errorMessage}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="flex min-h-64 items-center justify-center" role="status" aria-live="polite">
+            <div className="flex items-center gap-3 text-sm font-medium text-white/70">
+              <span aria-hidden="true" className="size-5 animate-spin rounded-full border-2 border-[#7F5281]/35 border-t-[#7F5281]" />
+              Cargando categorías...
+            </div>
+          </div>
+        ) : categories.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-[#7F5281]/35 bg-[#2A292E]/70 px-6 py-16 text-center backdrop-blur-xl">
+            <span aria-hidden="true" className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl border border-[#7F5281]/30 bg-[#4F2361]/30 text-xl text-white">⌕</span>
+            <h2 className="text-lg font-bold text-white">Aún no hay categorías</h2>
+            <p className="mt-2 text-sm text-white/55">Las nuevas categorías aparecerán aquí cuando estén disponibles.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category, index) => (
+              <article
+                key={category.id}
+                className="group relative flex min-h-56 flex-col justify-between overflow-hidden rounded-2xl border border-[#7F5281]/30 bg-[#2A292E]/85 p-6 shadow-xl shadow-black/20 backdrop-blur-2xl transition duration-200 hover:-translate-y-1 hover:border-[#7F5281]/60 hover:shadow-2xl hover:shadow-[#4F2361]/20"
+                style={{ animationDelay: `${index * 70}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-16 size-36 rounded-full bg-[#4F2361]/15 blur-3xl transition-colors group-hover:bg-[#7F5281]/20" />
+                <div className="relative">
+                  <span className="inline-flex rounded-full border border-[#7F5281]/35 bg-[#4F2361]/25 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#7F5281]">
                     Categoría
                   </span>
+                  <h2 className="mt-4 text-xl font-bold text-white">{category.name}</h2>
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/60">
+                    {category.description || 'Sin descripción disponible.'}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{cat.name}</h3>
-                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                  {cat.description || 'Sin descripción disponible.'}
-                </p>
-              </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                <Link
-                  to={`/categories/${cat.id}`}
-                  className="text-xs font-bold text-purple-600 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors inline-block"
-                >
-                  Ver eventos asociados →
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+                <div className="relative mt-6 border-t border-[#7F5281]/20 pt-4">
+                  <Link
+                    to={`/categories/${category.id}`}
+                    className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#4F2361]/35 hover:text-[#7F5281]"
+                  >
+                    Explorar eventos <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

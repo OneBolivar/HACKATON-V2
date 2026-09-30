@@ -14,7 +14,7 @@ export function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <AuthProvider>
-          <div className="min-h-screen bg-slate-50 flex flex-col text-gray-800">
+          <div className="flex min-h-screen flex-col bg-[#0b0910] text-white">
             {/* Barra de navegación persistente en todas las vistas */}
             <Navbar />
             

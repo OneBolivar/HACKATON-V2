@@ -5,7 +5,7 @@ import { ApiError } from './apiError';
 
 // Crear una instancia de Axios con la URL base de la API y encabezados predeterminados
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -13,9 +13,13 @@ export const apiClient = axios.create({
 
 // Adjuntar Token en cada petición
 apiClient.interceptors.request.use((config) => {
-  const token = tokenStorage.get();
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const token = tokenStorage.get()?.trim();
+  const isValidToken = token && token !== 'undefined' && token !== 'null';
+
+  if (isValidToken) {
+    config.headers.set('Authorization', `Bearer ${token}`);
+  } else {
+    config.headers.delete('Authorization');
   }
   return config;
 });
